@@ -9,8 +9,10 @@ class SpringerNatureProvider(ArticleProvider):
     source = "springer"
     source_label = "Springer Nature"
 
+    FALLBACK_KEY = "07d4526079fd4d4387a238f8511ab233"
+
     def __init__(self):
-        self.api_key = os.environ.get("SPRINGER_NATURE_KEY", "")
+        self.api_key = os.environ.get("SPRINGER_NATURE_KEY", "") or self.FALLBACK_KEY
 
     def buscar(self, query, page=1):
         if not self.api_key:

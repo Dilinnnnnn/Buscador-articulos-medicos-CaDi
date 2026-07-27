@@ -10,8 +10,10 @@ class SemanticScholarProvider(ArticleProvider):
     source = "semantic"
     source_label = "Semantic Scholar"
 
+    FALLBACK_KEY = "s2k-IMjhX49IIelIRp3nP0z3zsnG5BANIoZ3pXeaYKhP"
+
     def __init__(self):
-        self.api_key = os.environ.get("SEMANTIC_SCHOLAR_KEY") or None
+        self.api_key = os.environ.get("SEMANTIC_SCHOLAR_KEY") or self.FALLBACK_KEY
 
     def buscar(self, query, page=1):
         limit = 20
