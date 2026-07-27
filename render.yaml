@@ -3,7 +3,7 @@ services:
     name: buscador-medico
     env: docker
     dockerfilePath: ./Dockerfile
-    branch: main
+    branch: master
     envVars:
       - key: PUBMED_API_KEY
         value: 2f850568e99e0a6f818fb945bc1ebbaec309
