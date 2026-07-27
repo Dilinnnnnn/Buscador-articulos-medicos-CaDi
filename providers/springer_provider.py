@@ -31,6 +31,8 @@ class SpringerNatureProvider(ArticleProvider):
                 "s": start,
                 "p": limit,
             }, timeout=15)
+            if resp.status_code == 404:
+                return SearchResult([], 0, page, 1, self.source, self.source_label)
             resp.raise_for_status()
             data = resp.json()
         except Exception as e:

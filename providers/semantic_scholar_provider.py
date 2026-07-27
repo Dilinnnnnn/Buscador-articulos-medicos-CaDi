@@ -25,6 +25,7 @@ class SemanticScholarProvider(ArticleProvider):
 
         for attempt in range(3):
             try:
+                time.sleep(0.5)
                 resp = requests.get(f"{BASE_URL}/paper/search", params={
                     "query": query,
                     "limit": limit,
@@ -32,22 +33,22 @@ class SemanticScholarProvider(ArticleProvider):
                     "fields": "title,authors,abstract,publicationDate,venue,externalIds,url,tldr",
                 }, headers=headers, timeout=15)
 
-                if resp.status_code == 429 and attempt < 2:
-                    time.sleep(2)
-                    continue
+                if resp.status_code == 429:
+                    if attempt < 2:
+                        wait = 3 * (attempt + 1)
+                        time.sleep(wait)
+                        continue
+                    return SearchResult([], 0, page, 0, self.source, self.source_label,
+                                        error="Semantic Scholar: límite de consultas alcanzado. "
+                                              "Espera unos segundos y vuelve a intentar.")
 
                 resp.raise_for_status()
                 data = resp.json()
                 break
             except Exception as e:
                 if attempt == 2:
-                    msg = ("Demasiadas solicitudes anónimas. "
-                           "Consigue una API key GRATIS en "
-                           "https://www.semanticscholar.org/product/api "
-                           "y configúrala como SEMANTIC_SCHOLAR_KEY"
-                           ) if "429" in str(e) else str(e)
                     return SearchResult([], 0, page, 0, self.source, self.source_label,
-                                        error=f"Error en Semantic Scholar: {msg}")
+                                        error=f"Error en Semantic Scholar: {e}")
                 time.sleep(1)
 
         total = data.get("total", 0) or 0
