@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buscador de Artículos Médicos</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: linear-gradient(135deg, #e8f0fe 0%, #d4e4f7 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .container {
+      width: 100%;
+      max-width: 760px;
+      text-align: center;
+    }
+    .logo { font-size: 4rem; margin-bottom: 8px; }
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #1a2a4a;
+      margin-bottom: 8px;
+    }
+    p.sub {
+      font-size: 1rem;
+      color: #5a6a8a;
+      margin-bottom: 28px;
+    }
+    .sources-hint {
+      font-size: 0.8rem;
+      color: #8a9ab8;
+      margin-top: -22px;
+      margin-bottom: 28px;
+    }
+    .search-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    select {
+      padding: 16px 14px;
+      font-size: 1rem;
+      border: 2px solid #d0d9e8;
+      border-radius: 12px;
+      outline: none;
+      background: #fff;
+      color: #1e293b;
+      cursor: pointer;
+      min-width: 180px;
+      transition: border-color 0.2s;
+    }
+    select:focus { border-color: #2563eb; }
+    input[type="text"] {
+      flex: 1;
+      min-width: 250px;
+      padding: 16px 20px;
+      font-size: 1.1rem;
+      border: 2px solid #d0d9e8;
+      border-radius: 12px;
+      outline: none;
+      background: #fff;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    input[type="text"]:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 4px rgba(37,99,235,0.15);
+    }
+    button {
+      padding: 16px 32px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #fff;
+      background: #2563eb;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+    button:hover { background: #1d4ed8; }
+    button:active { transform: scale(0.97); }
+    .error {
+      margin-top: 20px;
+      padding: 14px 20px;
+      background: #fef2f2;
+      color: #b91c1c;
+      border-radius: 10px;
+      font-size: 0.95rem;
+    }
+    .footer {
+      margin-top: 48px;
+      font-size: 0.85rem;
+      color: #8a9ab8;
+      line-height: 1.6;
+    }
+    .footer a { color: #2563eb; text-decoration: none; }
+    @media (max-width: 700px) {
+      h1 { font-size: 1.6rem; }
+      .search-row { flex-direction: column; }
+      select { width: 100%; }
+      button { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">🔬</div>
+    <h1>Buscador de Artículos Médicos</h1>
+    <p class="sub">Busca en PubMed, Semantic Scholar o Springer Nature — por palabra clave, autor o tema</p>
+    <form action="/" method="GET" role="search">
+      <div class="search-row">
+        <select name="source">
+          <option value="pubmed" {% if selected_source == 'pubmed' %}selected{% endif %}>PubMed (NIH)</option>
+          <option value="semantic" {% if selected_source == 'semantic' %}selected{% endif %}>Semantic Scholar</option>
+          <option value="springer" {% if selected_source == 'springer' %}selected{% endif %}>Springer Nature</option>
+          <option value="openalex" {% if selected_source == 'openalex' %}selected{% endif %}>OpenAlex</option>
+          <option value="europepmc" {% if selected_source == 'europepmc' %}selected{% endif %}>Europe PMC</option>
+          <option value="arxiv" {% if selected_source == 'arxiv' %}selected{% endif %}>arXiv (Médico)</option>
+          <option value="core" {% if selected_source == 'core' %}selected{% endif %}>CORE (Open Access)</option>
+        </select>
+        <input type="text" name="q" placeholder="Ej: cáncer tratamiento, diabetes tipo 2, COVID-19..." value="{{ request.args.get('q', '') }}" autofocus>
+        <button type="submit">Buscar</button>
+      </div>
+    </form>
+    {% if error %}
+      <div class="error">{{ error }}</div>
+    {% endif %}
+    <div class="footer">
+      Datos de <a href="https://pubmed.ncbi.nlm.nih.gov/" target="_blank">PubMed</a> (NIH/NLM) •
+      <a href="https://semanticscholar.org/" target="_blank">Semantic Scholar</a> (AI2) •
+      <a href="https://dev.springernature.com/" target="_blank">Springer Nature</a> •
+      <a href="https://openalex.org/" target="_blank">OpenAlex</a> (OurResearch) •
+      <a href="https://europepmc.org/" target="_blank">Europe PMC</a> (EMBL-EBI) •
+      <a href="https://arxiv.org/" target="_blank">arXiv</a> (Cornell) •
+      <a href="https://core.ac.uk/" target="_blank">CORE</a> (OACore)
+    </div>
+  </div>
+</body>
+</html>

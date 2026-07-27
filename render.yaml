@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: buscador-medico
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python app.py
+    envVars:
+      - key: PUBMED_API_KEY
+        value: 2f850568e99e0a6f818fb945bc1ebbaec309
+      - key: SEMANTIC_SCHOLAR_KEY
+        value: ""
+      - key: SPRINGER_NATURE_KEY
+        value: ""
+      - key: CORE_API_KEY
+        value: ""
