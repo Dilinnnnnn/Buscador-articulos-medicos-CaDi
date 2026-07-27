@@ -3,13 +3,13 @@ services:
     name: buscador-medico
     env: python
     buildCommand: pip install -r requirements.txt
-    startCommand: python app.py
+    startCommand: gunicorn --bind 0.0.0.0:5000 app:app
     envVars:
       - key: PUBMED_API_KEY
         value: 2f850568e99e0a6f818fb945bc1ebbaec309
       - key: SEMANTIC_SCHOLAR_KEY
-        value: ""
+        value: s2k-IMjhX49IIelIRp3nP0z3zsnG5BANIoZ3pXeaYKhP
       - key: SPRINGER_NATURE_KEY
-        value: ""
+        value: 07d4526079fd4d4387a238f8511ab233
       - key: CORE_API_KEY
         value: ""
